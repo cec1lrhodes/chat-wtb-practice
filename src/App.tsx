@@ -3,21 +3,33 @@ import { useState } from "react";
 interface Chat {
   id: number;
   name: string;
+  messages: string[];
 }
 
 function App() {
   const [textAreaValue, setTextAreaValue] = useState("");
-  const [messages, setMessages] = useState<string[]>([]);
+  const [activeChatId, setActiveChatId] = useState<number | null>(null);
+
+  // chats
   const [chats, setChats] = useState<Chat[]>([]);
+  // chat buttons logic
   const [newChatName, setNewChatName] = useState("");
   const [newChatFlag, setNewChatFlag] = useState(false);
 
   const handleSendMessage = () => {
-    if (textAreaValue.trim() === "") return;
-
-    setMessages([...messages, textAreaValue]);
+    if (textAreaValue.trim() === "" || activeChatId === null) return;
+    setChats(
+      chats.map((chat) =>
+        chat.id === activeChatId
+          ? { ...chat, messages: [...chat.messages, textAreaValue] }
+          : chat,
+      ),
+    );
     setTextAreaValue("");
-    console.log(messages);
+  };
+
+  const handleSelectChat = (id: number) => {
+    setActiveChatId(id);
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -32,7 +44,6 @@ function App() {
     const value = event.target.value;
 
     setTextAreaValue(value);
-    console.log(value);
   };
 
   const handleAddChat = () => {
@@ -41,8 +52,9 @@ function App() {
 
   const handleCreateChat = () => {
     if (newChatName.trim() === "") return;
-    const newChat = { id: Date.now(), name: newChatName };
+    const newChat: Chat = { id: Date.now(), name: newChatName, messages: [] };
     setChats([...chats, newChat]);
+    setActiveChatId(newChat.id);
     setNewChatName("");
     setNewChatFlag(false);
   };
@@ -69,6 +81,8 @@ function App() {
       handleCancelChat();
     }
   };
+
+  const activeChat = chats.find((chat) => chat.id === activeChatId);
 
   return (
     <div className="flex h-screen bg-zinc-950 text-white overflow-hidden">
@@ -128,8 +142,14 @@ function App() {
           {chats.map((chat) => (
             <button
               key={chat.id}
-              className="w-full text-left px-3 py-2 rounded-lg text-sm text-zinc-300 hover:bg-zinc-800 transition-colors"
-              aria-label={`Open chat ${chat}`}
+              onClick={() => handleSelectChat(chat.id)}
+              className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors
+      ${
+        chat.id === activeChatId
+          ? "bg-zinc-700 text-white"
+          : "text-zinc-300 hover:bg-zinc-800"
+      }`}
+              aria-label={`Open chat ${chat.name}`}
             >
               # {chat.name}
             </button>
@@ -141,11 +161,20 @@ function App() {
       <main className="flex-1 flex flex-col overflow-hidden">
         <div className="flex-1 overflow-y-auto p-4">
           {/* Тут будуть повідомлення */}
-          {messages.map((message, index) => (
-            <div key={index} className="text-sm text-zinc-300 gap-2">
-              {message}
-            </div>
-          ))}
+          {activeChat ? (
+            activeChat.messages.map((message, index) => (
+              <div
+                key={index}
+                className="text-sm text-zinc-300 bg-zinc-800 rounded-lg p-2"
+              >
+                {message}
+              </div>
+            ))
+          ) : (
+            <p className="text-zinc-600 text-sm text-center mt-10">
+              Виберіть чат
+            </p>
+          )}
         </div>
         {/* Textarea внизу */}
 
