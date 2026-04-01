@@ -4,10 +4,10 @@ import { NewChatModal } from "./NewChatModal";
 
 type ChatSidebarProps = {
   chats: Chat[];
-  activeChatId: number | null;
+  activeChatId: string | null;
   newChatFlag: boolean;
   newChatName: string;
-  onSelectChat: (id: number) => void;
+  onSelectChat: (id: string) => void;
   onAddChat: () => void;
   onCreateChat: () => void;
   onCancelChat: () => void;

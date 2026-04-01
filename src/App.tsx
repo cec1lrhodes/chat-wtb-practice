@@ -1,32 +1,36 @@
-import { useChats } from "./hooks/useChats";
-import { useMessageInput } from "./hooks/useMessageInput";
-import { ChatSidebar } from "./components/ChatSidebar";
-import { MessageList } from "./components/MessageList";
-import { MessageInput } from "./components/MessageInput";
-import { UserSidebar } from "./components/UserSidebar";
+import { useState } from "react"
+import { AuthPage } from "./components/AuthPage"
+import { ChatSidebar } from "./components/ChatSidebar"
+import { MessageList } from "./components/MessageList"
+import { MessageInput } from "./components/MessageInput"
+import { UserSidebar } from "./components/UserSidebar"
+import { useSocket } from "./hooks/useSocket"
 
-const App = () => {
+const ChatApp = ({ token }: { token: string }) => {
   const {
     chats,
-    setChats,
+    onlineUsers,
+    totalUsers,
+    typingUsers,
     activeChatId,
     activeChat,
-    newChatName,
     newChatFlag,
+    newChatName,
+    textAreaValue,
     handleSelectChat,
     handleAddChat,
     handleCreateChat,
     handleCancelChat,
     handleNewChatNameChange,
     handleNewChatNameKeyDown,
-  } = useChats();
+    handleTextAreaChange,
+    handleKeyDown,
+  } = useSocket(token)
 
-  const { textAreaValue, handleTextAreaChange, handleKeyDown } =
-    useMessageInput(activeChatId, setChats);
+  const activeTypingUsers = activeChatId ? (typingUsers[activeChatId] ?? []) : []
 
   return (
     <div className="flex h-screen bg-zinc-950 text-white overflow-hidden">
-      {/* ЛІВА КОЛОНКА З ЧАТАМИ  */}
       <ChatSidebar
         chats={chats}
         activeChatId={activeChatId}
@@ -39,19 +43,29 @@ const App = () => {
         onNewChatNameChange={handleNewChatNameChange}
         onNewChatNameKeyDown={handleNewChatNameKeyDown}
       />
-      {/* ІНПУТ ТА ПОВІДОМЛЕННЯ */}
       <main className="flex-1 flex flex-col overflow-hidden">
-        <MessageList activeChat={activeChat} />
+        <MessageList activeChat={activeChat} typingUsers={activeTypingUsers} />
         <MessageInput
           textAreaValue={textAreaValue}
           onTextAreaChange={handleTextAreaChange}
           onKeyDown={handleKeyDown}
         />
       </main>
-      {/* ПРАВА КОЛОНКА З ЮЗЕРАМИ */}
-      <UserSidebar />
+      <UserSidebar onlineUsers={onlineUsers} totalUsers={totalUsers} />
     </div>
-  );
-};
+  )
+}
 
-export default App;
+const App = () => {
+  const [token, setToken] = useState<string | null>(
+    () => localStorage.getItem("token")
+  )
+
+  const handleAuth = (newToken: string) => setToken(newToken)
+
+  if (!token) return <AuthPage onAuth={handleAuth} />
+
+  return <ChatApp token={token} />
+}
+
+export default App
