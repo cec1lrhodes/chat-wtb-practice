@@ -80,7 +80,10 @@ export const useSocket = (token: string) => {
     }
   }, [token])
 
-  const handleSelectChat = (id: string) => setActiveChatId(id)
+  const handleSelectChat = (id: string) => {
+    setActiveChatId(id)
+    socketRef.current?.emit("chat:join", { chatId: id })
+  }
 
   const handleAddChat = () => setNewChatFlag(true)
 
