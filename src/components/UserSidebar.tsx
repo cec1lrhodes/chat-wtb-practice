@@ -3,9 +3,10 @@ import type { User } from "../types";
 type UserSidebarProps = {
   onlineUsers: User[];
   totalUsers: number;
+  onLogout: () => void;
 };
 
-export const UserSidebar = ({ onlineUsers, totalUsers }: UserSidebarProps) => (
+export const UserSidebar = ({ onlineUsers, totalUsers, onLogout }: UserSidebarProps) => (
   <aside className="w-52 shrink-0 border-l border-zinc-800 flex flex-col">
     <div className="px-4 py-3 border-b border-zinc-800">
       <h2 className="text-sm font-semibold text-zinc-400 uppercase tracking-wider">
@@ -29,5 +30,15 @@ export const UserSidebar = ({ onlineUsers, totalUsers }: UserSidebarProps) => (
         </li>
       ))}
     </ul>
+
+    <div className="px-4 py-3 border-t border-zinc-800">
+      <button
+        onClick={onLogout}
+        aria-label="Log out"
+        className="w-full text-sm text-zinc-400 hover:text-red-400 hover:bg-zinc-800 rounded-lg px-3 py-2 transition-colors text-left"
+      >
+        Log out
+      </button>
+    </div>
   </aside>
 );

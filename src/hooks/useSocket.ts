@@ -71,8 +71,11 @@ export const useSocket = (token: string) => {
       setOnlineUsers(users.map(mapUser))
     })
 
+    const currentUsername = localStorage.getItem("username") ?? ""
+
     socket.on("typing:update", (payload: { chatId: string; usernames: string[] }) => {
-      setTypingUsers((prev) => ({ ...prev, [payload.chatId]: payload.usernames }))
+      const others = payload.usernames.filter((name) => name !== currentUsername)
+      setTypingUsers((prev) => ({ ...prev, [payload.chatId]: others }))
     })
 
     return () => {

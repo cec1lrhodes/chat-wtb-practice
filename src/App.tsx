@@ -6,7 +6,7 @@ import { MessageInput } from "./components/MessageInput"
 import { UserSidebar } from "./components/UserSidebar"
 import { useSocket } from "./hooks/useSocket"
 
-const ChatApp = ({ token }: { token: string }) => {
+const ChatApp = ({ token, username, onLogout }: { token: string; username: string; onLogout: () => void }) => {
   const {
     chats,
     onlineUsers,
@@ -36,6 +36,7 @@ const ChatApp = ({ token }: { token: string }) => {
         activeChatId={activeChatId}
         newChatFlag={newChatFlag}
         newChatName={newChatName}
+        username={username}
         onSelectChat={handleSelectChat}
         onAddChat={handleAddChat}
         onCreateChat={handleCreateChat}
@@ -51,7 +52,7 @@ const ChatApp = ({ token }: { token: string }) => {
           onKeyDown={handleKeyDown}
         />
       </main>
-      <UserSidebar onlineUsers={onlineUsers} totalUsers={totalUsers} />
+      <UserSidebar onlineUsers={onlineUsers} totalUsers={totalUsers} onLogout={onLogout} />
     </div>
   )
 }
@@ -61,11 +62,19 @@ const App = () => {
     () => localStorage.getItem("token")
   )
 
+  const username = localStorage.getItem("username") ?? ""
+
   const handleAuth = (newToken: string) => setToken(newToken)
+
+  const handleLogout = () => {
+    localStorage.removeItem("token")
+    localStorage.removeItem("username")
+    setToken(null)
+  }
 
   if (!token) return <AuthPage onAuth={handleAuth} />
 
-  return <ChatApp token={token} />
+  return <ChatApp token={token} username={username} onLogout={handleLogout} />
 }
 
 export default App

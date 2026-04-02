@@ -7,6 +7,7 @@ type ChatSidebarProps = {
   activeChatId: string | null;
   newChatFlag: boolean;
   newChatName: string;
+  username: string;
   onSelectChat: (id: string) => void;
   onAddChat: () => void;
   onCreateChat: () => void;
@@ -20,6 +21,7 @@ export const ChatSidebar = ({
   activeChatId,
   newChatFlag,
   newChatName,
+  username,
   onSelectChat,
   onAddChat,
   onCreateChat,
@@ -65,5 +67,12 @@ export const ChatSidebar = ({
         onKeyDown={onNewChatNameKeyDown}
       />
     )}
+
+    <div className="px-4 py-3 border-t border-zinc-800 flex items-center gap-2">
+      <div className="w-7 h-7 rounded-full bg-indigo-600 flex items-center justify-center text-xs font-bold shrink-0 uppercase">
+        {username[0]}
+      </div>
+      <span className="text-sm text-zinc-300 truncate">{username}</span>
+    </div>
   </aside>
 );
