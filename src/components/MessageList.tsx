@@ -1,9 +1,9 @@
-import type { Chat } from "../types"
+import type { Chat } from "../types";
 
 type MessageListProps = {
-  activeChat: Chat | undefined
-  typingUsers: string[]
-}
+  activeChat: Chat | undefined;
+  typingUsers: string[];
+};
 
 export const MessageList = ({ activeChat, typingUsers }: MessageListProps) => (
   <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-2" role="log">
@@ -23,9 +23,9 @@ export const MessageList = ({ activeChat, typingUsers }: MessageListProps) => (
         ))}
 
         {typingUsers.length > 0 && (
-          <p className="text-xs text-zinc-500 italic px-1" aria-live="polite">
-            {typingUsers.join(", ")}{" "}
-            {typingUsers.length === 1 ? "is" : "are"} typing...
+          <p className="text-xs text-zinc-500 italic px-1">
+            {typingUsers.join(", ")} {typingUsers.length === 1 ? "is" : "are"}{" "}
+            typing...
           </p>
         )}
       </>
@@ -33,4 +33,4 @@ export const MessageList = ({ activeChat, typingUsers }: MessageListProps) => (
       <p className="text-zinc-600 text-sm text-center mt-10">Виберіть чат</p>
     )}
   </div>
-)
+);

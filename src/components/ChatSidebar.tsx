@@ -1,20 +1,20 @@
-import React from "react";
-import type { Chat } from "../types";
-import { NewChatModal } from "./NewChatModal";
+import type { ChangeEvent, KeyboardEvent } from "react"
+import type { Chat } from "../types"
+import { NewChatModal } from "./NewChatModal"
 
 type ChatSidebarProps = {
-  chats: Chat[];
-  activeChatId: string | null;
-  newChatFlag: boolean;
-  newChatName: string;
-  username: string;
-  onSelectChat: (id: string) => void;
-  onAddChat: () => void;
-  onCreateChat: () => void;
-  onCancelChat: () => void;
-  onNewChatNameChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  onNewChatNameKeyDown: (event: React.KeyboardEvent<HTMLInputElement>) => void;
-};
+  chats: Chat[]
+  activeChatId: string | null
+  newChatFlag: boolean
+  newChatName: string
+  username: string
+  onSelectChat: (id: string) => void
+  onAddChat: () => void
+  onCreateChat: () => void
+  onCancelChat: () => void
+  onNewChatNameChange: (event: ChangeEvent<HTMLInputElement>) => void
+  onNewChatNameKeyDown: (event: KeyboardEvent<HTMLInputElement>) => void
+}
 
 export const ChatSidebar = ({
   chats,
@@ -70,9 +70,9 @@ export const ChatSidebar = ({
 
     <div className="px-4 py-3 border-t border-zinc-800 flex items-center gap-2">
       <div className="w-7 h-7 rounded-full bg-indigo-600 flex items-center justify-center text-xs font-bold shrink-0 uppercase">
-        {username[0]}
+        {username[0] ?? "?"}
       </div>
       <span className="text-sm text-zinc-300 truncate">{username}</span>
     </div>
   </aside>
-);
+)

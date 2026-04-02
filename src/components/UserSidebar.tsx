@@ -6,7 +6,11 @@ type UserSidebarProps = {
   onLogout: () => void;
 };
 
-export const UserSidebar = ({ onlineUsers, totalUsers, onLogout }: UserSidebarProps) => (
+export const UserSidebar = ({
+  onlineUsers,
+  totalUsers,
+  onLogout,
+}: UserSidebarProps) => (
   <aside className="w-52 shrink-0 border-l border-zinc-800 flex flex-col">
     <div className="px-4 py-3 border-b border-zinc-800">
       <h2 className="text-sm font-semibold text-zinc-400 uppercase tracking-wider">
@@ -16,10 +20,7 @@ export const UserSidebar = ({ onlineUsers, totalUsers, onLogout }: UserSidebarPr
         {onlineUsers.length} online · {totalUsers} total
       </p>
     </div>
-    <ul
-      className="flex-1 overflow-y-auto p-2 flex flex-col gap-1"
-      aria-label="Online users"
-    >
+    <ul className="flex-1 overflow-y-auto p-2 flex flex-col gap-1">
       {onlineUsers.map((user) => (
         <li
           key={user.id}
@@ -34,7 +35,6 @@ export const UserSidebar = ({ onlineUsers, totalUsers, onLogout }: UserSidebarPr
     <div className="px-4 py-3 border-t border-zinc-800">
       <button
         onClick={onLogout}
-        aria-label="Log out"
         className="w-full text-sm text-zinc-400 hover:text-red-400 hover:bg-zinc-800 rounded-lg px-3 py-2 transition-colors text-left"
       >
         Log out

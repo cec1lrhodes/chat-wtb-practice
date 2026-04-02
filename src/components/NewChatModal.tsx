@@ -1,11 +1,11 @@
-import React from "react";
+import type { ChangeEvent, KeyboardEvent } from "react";
 
 type NewChatModalProps = {
   newChatName: string;
   onConfirm: () => void;
   onCancel: () => void;
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  onKeyDown: (event: React.KeyboardEvent<HTMLInputElement>) => void;
+  onChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  onKeyDown: (event: KeyboardEvent<HTMLInputElement>) => void;
 };
 
 export const NewChatModal = ({
@@ -20,7 +20,10 @@ export const NewChatModal = ({
     role="dialog"
   >
     <div className="bg-zinc-900 border border-zinc-700 rounded-2xl p-6 w-80 flex flex-col gap-4">
-      <h3 className="text-sm font-semibold text-zinc-300 uppercase tracking-wider">
+      <h3
+        id="new-chat-title"
+        className="text-sm font-semibold text-zinc-300 uppercase tracking-wider"
+      >
         Створити новий чат
       </h3>
       <div className="flex flex-col gap-1">

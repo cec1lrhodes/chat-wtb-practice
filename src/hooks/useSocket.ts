@@ -10,6 +10,7 @@ const mapChat = (c: any): Chat => ({
   id: c.chatId,
   name: c.name,
   messages: (c.messages ?? []).map(mapMessage),
+  createdAt: c.createdAt,
 })
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

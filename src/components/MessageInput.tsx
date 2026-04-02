@@ -1,9 +1,9 @@
-import React from "react";
+import type { ChangeEvent, KeyboardEvent } from "react";
 
 type MessageInputProps = {
   textAreaValue: string;
-  onTextAreaChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
-  onKeyDown: (event: React.KeyboardEvent<HTMLTextAreaElement>) => void;
+  onTextAreaChange: (event: ChangeEvent<HTMLTextAreaElement>) => void;
+  onKeyDown: (event: KeyboardEvent<HTMLTextAreaElement>) => void;
 };
 
 export const MessageInput = ({
