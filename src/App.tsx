@@ -1,14 +1,22 @@
-import { useState } from "react"
-import { AuthPage } from "./components/AuthPage"
-import { ChatSidebar } from "./components/ChatSidebar"
-import { MessageList } from "./components/MessageList"
-import { MessageInput } from "./components/MessageInput"
-import { UserSidebar } from "./components/UserSidebar"
-import { useSocket } from "./hooks/useSocket"
+import { useState, useMemo } from "react";
+import { AuthPage } from "./components/AuthPage";
+import { ChatSidebar } from "./components/ChatSidebar";
+import { MessageList } from "./components/MessageList";
+import { MessageInput } from "./components/MessageInput";
+import { UserSidebar } from "./components/UserSidebar";
+import { useSocket } from "./hooks/useSocket";
 
-const ChatApp = ({ token, username, onLogout }: { token: string; username: string; onLogout: () => void }) => {
+const ChatApp = ({
+  token,
+  username,
+  onLogout,
+}: {
+  token: string;
+  username: string;
+  onLogout: () => void;
+}) => {
   const {
-    chats,
+    chatList,
     onlineUsers,
     totalUsers,
     typingUsers,
@@ -25,14 +33,17 @@ const ChatApp = ({ token, username, onLogout }: { token: string; username: strin
     handleNewChatNameKeyDown,
     handleTextAreaChange,
     handleKeyDown,
-  } = useSocket(token)
+  } = useSocket(token);
 
-  const activeTypingUsers = activeChatId ? (typingUsers[activeChatId] ?? []) : []
+  const activeTypingUsers = useMemo(
+    () => (activeChatId ? (typingUsers[activeChatId] ?? []) : []),
+    [activeChatId, typingUsers],
+  );
 
   return (
     <div className="flex h-screen bg-zinc-950 text-white overflow-hidden">
       <ChatSidebar
-        chats={chats}
+        chats={chatList}
         activeChatId={activeChatId}
         newChatFlag={newChatFlag}
         newChatName={newChatName}
@@ -52,34 +63,38 @@ const ChatApp = ({ token, username, onLogout }: { token: string; username: strin
           onKeyDown={handleKeyDown}
         />
       </main>
-      <UserSidebar onlineUsers={onlineUsers} totalUsers={totalUsers} onLogout={onLogout} />
+      <UserSidebar
+        onlineUsers={onlineUsers}
+        totalUsers={totalUsers}
+        onLogout={onLogout}
+      />
     </div>
-  )
-}
+  );
+};
 
 const App = () => {
-  const [token, setToken] = useState<string | null>(
-    () => localStorage.getItem("token")
-  )
+  const [token, setToken] = useState<string | null>(() =>
+    localStorage.getItem("token"),
+  );
   const [username, setUsername] = useState<string>(
-    () => localStorage.getItem("username") ?? ""
-  )
+    () => localStorage.getItem("username") ?? "",
+  );
 
   const handleAuth = (newToken: string, newUsername: string) => {
-    setToken(newToken)
-    setUsername(newUsername)
-  }
+    setToken(newToken);
+    setUsername(newUsername);
+  };
 
   const handleLogout = () => {
-    localStorage.removeItem("token")
-    localStorage.removeItem("username")
-    setToken(null)
-    setUsername("")
-  }
+    localStorage.removeItem("token");
+    localStorage.removeItem("username");
+    setToken(null);
+    setUsername("");
+  };
 
-  if (!token) return <AuthPage onAuth={handleAuth} />
+  if (!token) return <AuthPage onAuth={handleAuth} />;
 
-  return <ChatApp token={token} username={username} onLogout={handleLogout} />
-}
+  return <ChatApp token={token} username={username} onLogout={handleLogout} />;
+};
 
-export default App
+export default App;

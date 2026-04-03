@@ -17,3 +17,8 @@ export interface Chat {
   messages: Message[]
   createdAt: string
 }
+
+export interface ChatItem {
+  id: string
+  name: string
+}
