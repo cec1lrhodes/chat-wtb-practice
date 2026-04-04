@@ -5,6 +5,7 @@ import { MessageList } from "./components/MessageList";
 import { MessageInput } from "./components/MessageInput";
 import { UserSidebar } from "./components/UserSidebar";
 import { useSocket } from "./hooks/useSocket";
+import { useAuth } from "./hooks/useAuth";
 
 const ChatApp = ({
   token,
@@ -73,24 +74,7 @@ const ChatApp = ({
 };
 
 const App = () => {
-  const [token, setToken] = useState<string | null>(() =>
-    localStorage.getItem("token"),
-  );
-  const [username, setUsername] = useState<string>(
-    () => localStorage.getItem("username") ?? "",
-  );
-
-  const handleAuth = (newToken: string, newUsername: string) => {
-    setToken(newToken);
-    setUsername(newUsername);
-  };
-
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("username");
-    setToken(null);
-    setUsername("");
-  };
+  const { token, username, handleAuth, handleLogout } = useAuth();
 
   if (!token) return <AuthPage onAuth={handleAuth} />;
 

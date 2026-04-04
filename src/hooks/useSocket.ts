@@ -59,7 +59,7 @@ export const useSocket = (token: string) => {
         onlineUsers: unknown[];
         totalUsers: number;
       }) => {
-        const mappedChats = data.chats.map(mapChat)
+        const mappedChats = data.chats.map(mapChat);
         setChats(mappedChats);
         setChatList(mappedChats.map(({ id, name }) => ({ id, name })));
         setOnlineUsers(data.onlineUsers.map(mapUser));
