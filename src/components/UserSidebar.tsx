@@ -9,7 +9,6 @@ type UserSidebarProps = {
 
 export const UserSidebar = memo<UserSidebarProps>(
   ({ onlineUsers, totalUsers, onLogout }) => {
-    console.log("UserSidebar render");
     return (
       <aside className="w-52 shrink-0 border-l border-zinc-800 flex flex-col">
         <div className="px-4 py-3 border-b border-zinc-800">

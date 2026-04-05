@@ -30,7 +30,6 @@ export const ChatSidebar = memo<ChatSidebarProps>(
     onNewChatNameChange,
     onNewChatNameKeyDown,
   }) => {
-    console.log("ChatSidebar render");
     return (
       <aside className="w-60 shrink-0 border-r border-zinc-800 flex flex-col">
         <div className="px-4 py-3 border-b border-zinc-800 flex flex-col gap-2">

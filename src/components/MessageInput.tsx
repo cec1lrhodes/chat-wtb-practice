@@ -8,7 +8,6 @@ type MessageInputProps = {
 
 export const MessageInput = memo<MessageInputProps>(
   ({ textAreaValue, onTextAreaChange, onKeyDown }) => {
-    console.log("MessageInput render");
     return (
       <div className="p-4 border-t border-zinc-800">
         <textarea
