@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useMemo } from "react";
 import { AuthPage } from "./components/AuthPage";
 import { ChatSidebar } from "./components/ChatSidebar";
 import { MessageList } from "./components/MessageList";
