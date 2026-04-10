@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useState } from "react"
+
+const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:3001"
 
 type AuthMode = "login" | "register";
 
@@ -18,7 +20,7 @@ export const AuthPage = ({ onAuth }: AuthPageProps) => {
     setError(null);
     setLoading(true);
     try {
-      const res = await fetch(`http://localhost:3001/auth/${mode}`, {
+      const res = await fetch(`${API_URL}/auth/${mode}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),

@@ -1,6 +1,6 @@
 import type { Chat, Message, User } from "../../types";
 
-export const SOCKET_URL = "http://localhost:3001";
+export const SOCKET_URL = import.meta.env.VITE_API_URL ?? "http://localhost:3001";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const mapMessage = (m: any): Message => ({
