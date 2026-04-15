@@ -8,6 +8,8 @@ type ChatSidebarProps = {
   newChatFlag: boolean;
   newChatName: string;
   username: string;
+  isOpen: boolean;
+  onClose: () => void;
   onSelectChat: (id: string) => void;
   onAddChat: () => void;
   onCreateChat: () => void;
@@ -23,6 +25,8 @@ export const ChatSidebar = memo<ChatSidebarProps>(
     newChatFlag,
     newChatName,
     username,
+    isOpen,
+    onClose,
     onSelectChat,
     onAddChat,
     onCreateChat,
@@ -30,12 +34,35 @@ export const ChatSidebar = memo<ChatSidebarProps>(
     onNewChatNameChange,
     onNewChatNameKeyDown,
   }) => {
+    const handleSelectAndClose = (id: string) => {
+      onSelectChat(id)
+      onClose()
+    }
+
     return (
-      <aside className="w-60 shrink-0 border-r border-zinc-800 flex flex-col">
+      <aside
+        className={`
+          fixed inset-y-0 left-0 z-40 w-72 flex flex-col bg-zinc-950 border-r border-zinc-800
+          transform transition-transform duration-300 ease-in-out
+          md:relative md:inset-auto md:z-auto md:w-60 md:shrink-0 md:translate-x-0
+          ${isOpen ? "translate-x-0" : "-translate-x-full"}
+        `}
+      >
         <div className="px-4 py-3 border-b border-zinc-800 flex flex-col gap-2">
-          <h2 className="text-sm font-semibold text-zinc-400 uppercase tracking-wider">
-            Chats
-          </h2>
+          <div className="flex items-center justify-between">
+            <h2 className="text-sm font-semibold text-zinc-400 uppercase tracking-wider">
+              Chats
+            </h2>
+            <button
+              onClick={onClose}
+              className="md:hidden p-1 rounded text-zinc-500 hover:text-zinc-200 hover:bg-zinc-800 transition-colors"
+              aria-label="Закрити"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
           <button
             onClick={onAddChat}
             className="text-zinc-400 hover:text-zinc-300 bg-zinc-800 rounded-lg px-4 py-2 text-sm transition-colors"
@@ -48,7 +75,7 @@ export const ChatSidebar = memo<ChatSidebarProps>(
           {chats.map((chat) => (
             <button
               key={chat.id}
-              onClick={() => onSelectChat(chat.id)}
+              onClick={() => handleSelectAndClose(chat.id)}
               className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ${
                 chat.id === activeChatId
                   ? "bg-zinc-700 text-white"
